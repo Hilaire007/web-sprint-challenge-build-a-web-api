@@ -13,14 +13,14 @@ const {
 const Projects = require("./projects-model");
 
 router.get("/", async (req, res) => {
-  try {
-    const projects = await Projects.get();
-    res.status(200).json(projects);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Failed to get projects" });
-  }
-});
+    try {
+      const projects = await Projects.get();
+      res.status(200).json(projects || []);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Error retrieving projects" });
+    }
+  });
 
 router.get("/:id", validateProjectId, (req, res) => {
   res.status(200).json(req.project);
