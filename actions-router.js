@@ -10,11 +10,10 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const actions = await Actions.getAll();
-    res.status(200).json(actions);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Failed to get actions" });
+    const actions = await Actions.get();
+    res.json(actions || []);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving actions" });
   }
 });
 
