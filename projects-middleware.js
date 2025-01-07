@@ -11,7 +11,7 @@ async function validateProjectId(req, res, next) {
         .status(404)
         .json({ message: `Project with id ${id} not found` });
     }
-    req.pro;
+    req.project = project;
     next();
   } catch (err) {
     console.error(err);
