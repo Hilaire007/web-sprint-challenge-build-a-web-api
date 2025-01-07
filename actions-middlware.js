@@ -1,5 +1,3 @@
-// add middlewares here related to actions
-
 const Actions = require("./actions-model");
 
 async function validateActionId(req, res, next) {
@@ -20,8 +18,8 @@ async function validateActionId(req, res, next) {
 }
 
 function validateAction(req, res, next) {
-  const { project_id, description, notes, completed } = req.body;
-  if (!project_id || !description || !notes || completed === undefined) {
+  const { description, notes, completed } = req.body;
+  if (!description || !notes || completed === undefined) {
     return res.status(400).json({
       message:
         "Project ID, description, notes, and completed status are required",
