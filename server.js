@@ -16,17 +16,11 @@ server.get("/", (req, res) => {
   res.send("Hello world");
 });
 
-server.use((err, req, res, next) => {
+server.use((err, req, res) => {
   console.error(err);
   res
     .status(500)
     .json({ message: "Something went wrong, please try again later." });
 });
-
-// Build your actions router in /api/actions/actions-router.js
-
-// Build your projects router in /api/projects/projects-router.js
-
-// Do NOT `server.listen()` inside this file!
 
 module.exports = server;
