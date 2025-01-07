@@ -21,7 +21,7 @@ router.get("/:id", validateActionId, (req, res) => {
   res.status(200).json(req.action);
 });
 
-router.post("/", validateAction, validateProjectId, async (req, res) => {
+router.post("/", validateAction, async (req, res) => {
   try {
     const newAction = await Actions.insert(req.body);
     res.status(201).json(newAction);
