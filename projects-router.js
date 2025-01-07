@@ -1,10 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json({ message: "Projects endpoint working!" });
-});
-
 const {
   validateProjectId,
   validateProject,
@@ -13,14 +9,15 @@ const {
 const Projects = require("./projects-model");
 
 router.get("/", async (req, res) => {
-    try {
-      const projects = await Projects.get();
+  Projects.get()
+    .then((projects) => {
       res.status(200).json(projects || []);
-    } catch (err) {
+    })
+    .catch((err) => {
       console.error(err);
       res.status(500).json({ message: "Error retrieving projects" });
-    }
-  });
+    });
+});
 
 router.get("/:id", validateProjectId, (req, res) => {
   res.status(200).json(req.project);
@@ -36,20 +33,15 @@ router.post("/", validateProject, async (req, res) => {
   }
 });
 
-router.put(
-  "/:id",
-  validateProjectId,
-  validateUpdateProject,
-  async (req, res) => {
-    try {
-      const updatedProject = await Projects.update(req.params.id, req.body);
+router.put("/:id", validateProjectId, validateUpdateProject, (req, res) => {
+  Projects.update(req.params.id, req.body)
+    .then((updatedProject) => {
       res.status(200).json(updatedProject);
-    } catch (err) {
-      console.error(err);
+    })
+    .catch(() => {
       res.status(500).json({ message: "Failed to update project" });
-    }
-  }
-);
+    });
+});
 
 router.delete("/:id", validateProjectId, async (req, res) => {
   try {
@@ -61,14 +53,15 @@ router.delete("/:id", validateProjectId, async (req, res) => {
   }
 });
 
-router.get("/:id/actions", validateProjectId, async (req, res) => {
-  try {
-    const actions = await Projects.getProjectActions(req.params.id);
-    res.status(200).json(actions);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Failed to get project actions" });
-  }
+router.get("/:id/actions", validateProjectId, (req, res) => {
+  Projects.getProjectActions(req.params.id)
+    .then((actions) => {
+      res.status(200).json(actions);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ message: "Failed to get project actions" });
+    });
 });
 
 module.exports = router;
